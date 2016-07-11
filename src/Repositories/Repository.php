@@ -20,7 +20,11 @@ abstract class Repository implements RepositoryInterface
 
     public function collection(callable $callback = null, array $columns = array('*'))
     {
-
+        $query = $this->model;
+        if ($callback) {
+            $query = $callback($query);
+        } 
+        return $query->get($columns);
     }
 
     public function paginate(array $paging = array(), callable $callback = null, array $columns = array('*'))
@@ -45,6 +49,6 @@ abstract class Repository implements RepositoryInterface
 
     public function delete($id, callable $callback = null)
     {
-        
+
     }
 }
