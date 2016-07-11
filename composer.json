@@ -1,0 +1,23 @@
+{
+    "name": "chipaau/laravel-core",
+    "description": "Laravel core functionality for resources and child resources",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ahmed Shifau",
+            "email": "chipaau@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/database": "^5.2",
+        "illuminate/routing": "^5.2",
+        "illuminate/support": "^5.2",
+        "illuminate/http": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Chipaau\\": "src/"
+        }
+    }
+}
