@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fe27d30029b1a6c2cb459e99e36d9dad",
-    "content-hash": "d389bc1610d792883c275d448424c7ab",
+    "hash": "b56e64204a145bedc6d2c973d845f9ed",
+    "content-hash": "66a944d69b3f5d9ef1cd09fd2cbfebe9",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -470,6 +470,118 @@
             "description": "The Illuminate Support package.",
             "homepage": "http://laravel.com",
             "time": "2016-05-30 02:40:53"
+        },
+        {
+            "name": "neomerx/json-api",
+            "version": "v0.6.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/neomerx/json-api.git",
+                "reference": "53468c0a5addf76e2d863fe967614546a2305e3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/neomerx/json-api/zipball/53468c0a5addf76e2d863fe967614546a2305e3c",
+                "reference": "53468c0a5addf76e2d863fe967614546a2305e3c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.4",
+                "phpunit/phpunit": "~4.6 || ^5.0",
+                "psr/http-message": "^1.0",
+                "scrutinizer/ocular": "~1.1",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Neomerx\\JsonApi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "neomerx",
+                    "email": "info@neomerx.com"
+                }
+            ],
+            "description": "Framework agnostic JSON API (jsonapi.org) implementation",
+            "homepage": "https://github.com/neomerx/json-api",
+            "keywords": [
+                "JSON-API",
+                "api",
+                "json",
+                "jsonapi",
+                "jsonapi.org",
+                "neomerx"
+            ],
+            "time": "2016-02-06 11:58:12"
+        },
+        {
+            "name": "neomerx/limoncello",
+            "version": "v0.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/neomerx/limoncello.git",
+                "reference": "4a0af3804553f4280d50b0b74428cb21909eae61"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/neomerx/limoncello/zipball/4a0af3804553f4280d50b0b74428cb21909eae61",
+                "reference": "4a0af3804553f4280d50b0b74428cb21909eae61",
+                "shasum": ""
+            },
+            "require": {
+                "neomerx/json-api": "~0.6.0",
+                "php": ">=5.5.0",
+                "symfony/http-kernel": "~2.6.7|~2.7.0|~2.8.0|~3.0.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.4",
+                "phpunit/phpunit": "~4.6",
+                "scrutinizer/ocular": "~1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Neomerx\\Limoncello\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "neomerx",
+                    "email": "info@neomerx.com"
+                }
+            ],
+            "description": "Framework integration for neomerx/json-api (JSON API, jsonapi.org)",
+            "homepage": "https://github.com/neomerx/limoncello",
+            "keywords": [
+                "JSON-API",
+                "api",
+                "json",
+                "jsonapi",
+                "jsonapi.org",
+                "laravel",
+                "lumen",
+                "neomerx",
+                "symfony"
+            ],
+            "time": "2015-12-10 16:34:33"
         },
         {
             "name": "nesbot/carbon",

@@ -3,6 +3,7 @@
 namespace Chipaau\Controllers;
 
 use Illuminate\Routing\Controller AS IlluminateController;
+use Illuminate\Http\Request;
 use Chipaau\Controllers\ControllerInterface;
 use Chipaau\Repositories\Repository;
 
@@ -18,9 +19,9 @@ abstract class Controller extends IlluminateController implements ControllerInte
         $this->repository = $repository;
     }
 
-    public function index(Request $request, $id = null)
+    public function index(Request $request, $resource = null)
     {
-
+        return $this->repository->collection();
     }
 
     public function show($resourceId, $childResourceId = null)
