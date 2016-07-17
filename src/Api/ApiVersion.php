@@ -3,18 +3,20 @@
 namespace Chipaau\Api;
 
 use Illuminate\Http\Request;
+use Chipaau\Api\VersionException;
 
 class ApiVersion {
 
-    const VERSION = 1;
+    const DEFAULT_VERSION = 1;
+    const DEFAULT_VERSION_NAMESPACE = 'V1';
 
     protected $request;
-
     protected $version;
 
 
     private static $valid_api_versions = [
-        1 => 'v1'
+        1 => 'V1',
+        2 => 'V2',
     ];
 
 
@@ -32,7 +34,18 @@ class ApiVersion {
      * @return integer
      */
     private function loadVersion() {
-        $this->version = $this->request->hasHeader('Api-Version') ? intval($this->request->header('Api-Version')) : self::VERSION;
+        if ($this->request->hasHeader('Api-Version')) {
+            $version = strtoupper($this->request->header('Api-Version'));
+            if (is_numeric($version)) {
+                $this->version = $version;
+            } elseif (in_array($version, self::$valid_api_versions)) {
+                $this->version = intval(substr($version, 1));
+            } else {
+                $this->version = intval($version);
+            }
+        } else {
+            $this->version = self::DEFAULT_VERSION;
+        }
     }
 
     /**
@@ -57,10 +70,8 @@ class ApiVersion {
     public function getVersion()
     {
         if (!self::isValid($this->version)) {
-            throw new \Exception("Invalid verson number supplied");
-            
+            throw new VersionException("Invalid verson number supplied");
         }
-
         return self::$valid_api_versions[$this->version];
     }
 
