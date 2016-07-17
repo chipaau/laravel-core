@@ -1,9 +1,9 @@
 <?php 
 
-namespace Chipaau\Api;
+namespace Chipaau\Versioning;
 
 use Illuminate\Routing\Route;
-use Chipaau\Api\ApiVersion;
+use Chipaau\Versioning\ApiVersion;
 
 /**
 * Route namespace binder

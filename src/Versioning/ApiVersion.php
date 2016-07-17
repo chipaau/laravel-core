@@ -1,9 +1,9 @@
 <?php 
 
-namespace Chipaau\Api;
+namespace Chipaau\Versioning;
 
 use Illuminate\Http\Request;
-use Chipaau\Api\VersionException;
+use Chipaau\Versioning\VersionException;
 
 class ApiVersion {
 

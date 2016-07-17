@@ -1,4 +1,4 @@
-<?php namespace Chipaau\Api;
+<?php namespace Chipaau\Versioning;
 
 use RuntimeException;
 
