@@ -2,15 +2,19 @@
 
 namespace Chipaau\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Container\Container;
 use Chipaau\Repositories\Repository;
+use Chipaau\JsonApi\RequestException;
 use Chipaau\Controllers\ControllerInterface;
 use Chipaau\Repositories\RepositoryException;
 use Chipaau\JsonApi\Request AS JsonApiRequest;
-use Chipaau\JsonApi\RequestException;
-use Neomerx\Limoncello\Contracts\Http\ResponsesInterface;
+use Illuminate\Http\Request;
+use Illuminate\Container\Container;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Controller AS IlluminateController;
+use Neomerx\Limoncello\Contracts\Http\ResponsesInterface;
+use Neomerx\Limoncello\Contracts\JsonApi\FactoryInterface;
 
 /**
 * Base controller
@@ -35,10 +39,11 @@ abstract class Controller extends IlluminateController implements ControllerInte
      */
     protected $repository;
 
-    public function __construct(Container $container, ResponsesInterface $response)
+    public function __construct(Container $container, ResponsesInterface $response, FactoryInterface $factory)
     {
         $this->container = $container;
         $this->response = $response;
+        $this->factory = $factory;
         $this->boot();
     }
 
@@ -50,33 +55,25 @@ abstract class Controller extends IlluminateController implements ControllerInte
      *
      * @return Response
      */
-    public function index(Request $request, $resource = null)
+    public function index($resource = null)
     {
-        dd('here controller', $this->response);
-        $parameters = $this->getRequest()->getParameters();
-        $data = $this->repository->collection();
-        dd($data);
-        //here its ok
-        $pagedData = $this->callApiIndex($parameters);
-        return $this->getResponses()->getPagedDataResponse($pagedData);
-    }
+        $parameters = $this->getParameters();
+        $data = $this->repository->setParameters($parameters)->getPaginatedCollection();
+        return $this->json($data);
 
-    // public function index(Request $request, $resource = null)
-    // {
-    //     return $this->repository->collection();
-    // }
+    }
 
     public function show($resourceId, $childResourceId = null)
     {
 
     }
 
-    public function store(Request $request, $resourceId = null)
+    public function store($resourceId = null)
     {
 
     }
 
-    public function update(Request $request, $resourceId, $childResourceId = null)
+    public function update($resourceId, $childResourceId = null)
     {
 
     }
@@ -89,9 +86,33 @@ abstract class Controller extends IlluminateController implements ControllerInte
     /**
      * @return JsonApiRequest
      */
+    protected function getFactory()
+    {
+        return $this->factory;
+    }
+
+    /**
+     * @return JsonApiRequest
+     */
     protected function getRequest()
     {
         return $this->request;
+    }
+
+    /**
+     * @return JsonApiRequest
+     */
+    protected function getResponses()
+    {
+        return $this->response;
+    }
+
+    /**
+     * @return Neomerx\Limoncello\Http\Reponses
+     */
+    protected function getRepository()
+    {
+        return $this->repository;
     }
 
     /**
@@ -119,5 +140,36 @@ abstract class Controller extends IlluminateController implements ControllerInte
         if (!$request instanceof JsonApiRequest)
             throw new RequestException("Class {$this->setRequest()} must be an instance of Chipaau\\JsonApi\\Request");
         $this->request = $request;
+    }
+
+    public function getParameters()
+    {
+        $parameters = $this->getRequest()->getParameters();
+        return [
+            'include' => $parameters->getIncludePaths(),
+            'fieldsets' => $parameters->getFieldSets(),
+            'sort' => $parameters->getSortParameters(),
+            'paging' => $parameters->getPaginationParameters(),
+            'filtering' => $parameters->getFilteringParameters(),
+            'unrecognized' => $parameters->getUnrecognizedParameters()
+        ];
+    }
+
+    protected function json($data)
+    {
+        if ($data instanceof LengthAwarePaginator) {
+            return $this->paginatedResponse($data);
+        }
+
+        return $this->getResponses()->getContentResponse($data);
+    }
+
+    protected function paginatedResponse(LengthAwarePaginator $paginator)
+    {
+        $request = $this->container->make(Request::class);
+        $url     = $request->url();
+        $query   = $request->query();
+        $data  = $this->getFactory()->createPagingStrategy()->createPagedData($paginator, $url, true, $query);
+        return $this->getResponses()->getPagedDataResponse($data);
     }
 }
